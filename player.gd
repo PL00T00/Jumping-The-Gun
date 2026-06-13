@@ -12,10 +12,10 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 		
 	var direction := Input.get_axis("Left", "Right")
-	if not is_recoiling:
-		if direction:
-			velocity.x = direction * SPEED
-		else:
+	if direction:
+		velocity.x = direction * SPEED
+	else:
+		if not is_recoiling:
 			velocity.x = move_toward(velocity.x, 0, 20)
 	if Input.is_action_just_pressed("Shoot1") and can_shoot:
 		shoot()
