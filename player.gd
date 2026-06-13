@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 const SPEED = 400.0
-const SHOOT_UP_FORCE = -800.0
+const SHOOT_FORCE = -800.0
 const SHOOT_TIMEOUT: float = 1.0
 
 var can_shoot: bool = true
@@ -21,7 +21,8 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func shoot():
-	velocity.y += SHOOT_UP_FORCE
+	var shoot_direction = global_position.direction_to(get_global_mouse_position())
+	velocity = shoot_direction * SHOOT_FORCE
 	can_shoot = false
 	await get_tree().create_timer(SHOOT_TIMEOUT).timeout
 	can_shoot = true
