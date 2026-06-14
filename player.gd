@@ -1,12 +1,14 @@
 extends CharacterBody2D
 
 const SPEED = 500.0
+const WALK_ACCELERATION = 2500.0
+const MAX_WALK_SPEED = 500.0
 const GROUND_ACCELERATION = 4000.0
-const AIR_ACCELERATION = 2000.0
+const AIR_ACCELERATION = 1500.0
 const FRICTION = 35000.0
 
-const SHOOT_FORCE = 1100.0
-const RELOAD_TIME = 0.35
+const SHOOT_FORCE = 750.0
+const RELOAD_TIME = 1
 
 var can_shoot = true
 
@@ -18,12 +20,15 @@ func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("Left", "Right")
 	
 	if direction != 0:
-		var accelerartion = GROUND_ACCELERATION if is_on_floor() else AIR_ACCELERATION
-		velocity.x = move_toward(
+		velocity.x += direction * WALK_ACCELERATION * delta
+	
+	if abs(velocity.x) < MAX_WALK_SPEED:
+		velocity.x = clamp(
 			velocity.x,
-			direction * SPEED,
-			accelerartion * delta
+			-MAX_WALK_SPEED,
+			MAX_WALK_SPEED
 		)
+
 	elif is_on_floor():
 		velocity.x = move_toward(
 			velocity.x,
